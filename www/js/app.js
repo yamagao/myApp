@@ -67,7 +67,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'PlaylistCtrl'
       }
     }
+  })
+  
+  .state('app.4H', {
+    url: '/4H',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/4H.html',
+        controller: '4HCtrl'
+      }
+    }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/4H');
 });

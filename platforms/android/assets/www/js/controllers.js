@@ -52,5 +52,10 @@ angular.module('starter.controllers', [])
   ];
 })
 
+.controller('4HCtrl', function($scope, $http) {
+	$http.get("http://www.w3schools.com/angular/customers.php")
+  .success(function (response) {$scope.names = response.records;});
+})
+
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 });
