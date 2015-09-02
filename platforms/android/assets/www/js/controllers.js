@@ -53,8 +53,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('4HCtrl', function($scope, $http) {
-	$http.get("http://www.w3schools.com/angular/customers.php")
-  .success(function (response) {$scope.names = response.records;});
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/4-h-and-youth/?json=1&count=20&callback=JSON_CALLBACK")
+  .success(function (response) {$scope.posts = response.posts;});
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
