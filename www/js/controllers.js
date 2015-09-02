@@ -58,4 +58,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
+	$scope.playlist = $stateParams;
+})
+
+.controller('PostCtrl', function($scope, $stateParams, $http) {
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_post&post_id=" + $stateParams.postId + "&callback=JSON_CALLBACK")
+  .success(function (response) {$scope.post = response.post;});
+
 });

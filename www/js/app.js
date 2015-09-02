@@ -68,6 +68,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+
+  .state('app.post', {
+    url: '/posts/:postId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/post.html',
+        controller: 'PostCtrl'
+      }
+    }
+  })
   
   .state('app.4H', {
     url: '/4H',

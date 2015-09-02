@@ -1,12 +1,12 @@
 <ion-view view-title="4-H & Youth">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="x in posts" href="#/app/playlists/{{1}}">
-		<!--<div ng-bind-html="x.custom_fields.thumbnail_html[0] + x.title"></div>-->
-        <div ng-bind-html="'<h1>' + x.title + '</h1>' +
-						   'Posted on ' + x.date.substring(0, 10) + '<br/>' +						    
-						   x.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357') + '<br/>' + 
-						   x.excerpt"></div>
+      <ion-item ng-repeat="post in posts" href="#/app/posts/{{post.id}}">
+		<!--<div ng-bind-html="post.custom_fields.thumbnail_html[0] + post.title"></div>-->
+        <div ng-bind-html="'<h1>' + post.title + '</h1>' +
+						   'Posted on ' + post.date.substring(0, 10) + '<br/>' +						    
+						   post.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357') + '<br/>' + 
+						   post.excerpt"></div>
       </ion-item>
     </ion-list>
   </ion-content>
