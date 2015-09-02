@@ -1,5 +1,8 @@
-<ion-view view-title="Post">
+<ion-view view-title="{{para.cat}}">
   <ion-content>
-    <h1>{{post.title}}</h1>
+    <div ng-bind-html="'<h1>' + post.title + '</h1>' +
+						   'Posted by ' + post.author.first_name + ' ' + post.author.last_name + ' on ' + post.date.substring(0, 10) + '<br/>' +						    
+						   post.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357') + '<br/>' + 
+						   post.content"></div>
   </ion-content>
 </ion-view>

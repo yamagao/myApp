@@ -1,7 +1,7 @@
 <ion-view view-title="4-H & Youth">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="post in posts" href="#/app/posts/{{post.id}}">
+      <ion-item ng-repeat="post in posts" href="#/app/posts/{{cat}}/{{post.id}}">
 		<!--<div ng-bind-html="post.custom_fields.thumbnail_html[0] + post.title"></div>-->
         <div ng-bind-html="'<h1>' + post.title + '</h1>' +
 						   'Posted on ' + post.date.substring(0, 10) + '<br/>' +						    

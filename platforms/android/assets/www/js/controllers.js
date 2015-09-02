@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
 
 .controller('4HCtrl', function($scope, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/4-h-and-youth/?json=1&count=20&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.posts = response.posts;});
+  .success(function (response) {$scope.posts = response.posts;$scope.cat = response.category.title;});
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
@@ -64,5 +64,5 @@ angular.module('starter.controllers', [])
 .controller('PostCtrl', function($scope, $stateParams, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_post&post_id=" + $stateParams.postId + "&callback=JSON_CALLBACK")
   .success(function (response) {$scope.post = response.post;});
-
+  $scope.para = $stateParams;
 });

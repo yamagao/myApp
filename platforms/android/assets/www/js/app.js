@@ -60,7 +60,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     })
 
   .state('app.single', {
-    url: '/playlists/:playlistId',
+    url: '/playlists/:playlistId/:option',
     views: {
       'menuContent': {
         templateUrl: 'templates/playlist.html',
@@ -70,7 +70,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   })
 
   .state('app.post', {
-    url: '/posts/:postId',
+    url: '/posts/:cat/:postId',
     views: {
       'menuContent': {
         templateUrl: 'templates/post.html',
