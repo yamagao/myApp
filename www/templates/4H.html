@@ -2,7 +2,7 @@
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="x in posts" href="#/app/playlists/{{1}}">
-        {{x.title}}
+        <div ng-bind-html="x.custom_fields.thumbnail_html[0] + x.title"></div>
       </ion-item>
     </ion-list>
   </ion-content>
