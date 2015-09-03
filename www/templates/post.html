@@ -1,7 +1,7 @@
 <ion-view view-title="{{para.cat}}">
   <ion-content>
     <div class="post" ng-bind-html="'<h1>' + post.title + '</h1>' +
-						   'Posted by ' + post.author.first_name + ' ' + post.author.last_name + ' on ' + post.date.substring(0, 10) + '<br/>' +						    
+						   'Posted by ' + post.author.name + ' on ' + post.date.substring(0, 10) + '<br/>' +						    
 						   post.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357') + '<br/>' + 
 						   post.content.replace(post.content.split('</div>')[0], '').replace('<br />', '</p><p>')"></div>
   </ion-content>
