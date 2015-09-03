@@ -1,7 +1,14 @@
 /* Empty. Add your own CSS if you like */
 .attachment-thumbnail{
-	margin: 10px;
+	padding: 5px 0px;
 }
 h1{
 	font-size: 20px;
+}
+.post{
+	padding: 19px;	
+}
+img{
+	float:left;
+	padding: 5px 10px 5px 0px;
 }
