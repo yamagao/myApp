@@ -65,4 +65,33 @@ angular.module('starter.controllers', [])
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_post&post_id=" + $stateParams.postId + "&callback=JSON_CALLBACK")
   .success(function (response) {$scope.post = response.post;});
   $scope.para = $stateParams;
+})
+
+.controller('accodionCtrl', function($scope) {
+  $scope.groups = [];
+  for (var i=0; i<10; i++) {
+    $scope.groups[i] = {
+      name: i,
+      items: []
+    };
+    for (var j=0; j<3; j++) {
+      $scope.groups[i].items.push(i + '-' + j);
+    }
+  }
+  
+  /*
+   * if given group is the selected group, deselect it
+   * else, select the given group
+   */
+  $scope.toggleGroup = function(group) {
+    if ($scope.isGroupShown(group)) {
+      $scope.shownGroup = null;
+    } else {
+      $scope.shownGroup = group;
+    }
+  };
+  $scope.isGroupShown = function(group) {
+    return $scope.shownGroup === group;
+  };
+  
 });
