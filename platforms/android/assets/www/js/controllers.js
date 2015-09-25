@@ -75,10 +75,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('accodionCtrl', function($scope, $http) {
+	$scope.groups = [];
 	//get categories
-  $http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.groups = [];
     $scope.groups[0] = {
       name: 'Category',
       items: []
@@ -93,29 +93,49 @@ angular.module('starter.controllers', [])
 				$scope.groups[0].items.push(tempCat);
 			}
 		}
-		for (var i=1; i<2; i++) {
-      $scope.groups[i] = {
-        name: i,
-        items: []
-      };
-			for (var j=0; j<3; j++) {
-				$scope.groups[i].items.push(i + '-' + j);
+	}); 
+	
+	//get tags
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_tag_index&callback=JSON_CALLBACK")
+  .success(function (response) {
+    $scope.groups[1] = {
+      name: 'Popular Tag',
+      items: []
+    };
+		for(var i = 0; i < response.tags.length; i++){
+			//show only tags with post_count > 30
+			if(response.tags[i].post_count > 30){
+				//replace &amp; with & for title and push the category object to item
+				var tempTag = response.tags[i];
+				tempTag.title = tempTag.title.replace(/&amp;/g, "&");
+				$scope.groups[1].items.push(tempTag);
 			}
-    }
-  
-		/*
-		* if given group is the selected group, deselect it
-		* else, select the given group
-		*/
-		$scope.toggleGroup = function(group) {
-      if ($scope.isGroupShown(group)) {
-        $scope.shownGroup = null;
-      } else {
-        $scope.shownGroup = group;
-      }
-    };
-    $scope.isGroupShown = function(group) {
-      return $scope.shownGroup === group;
-    };
-  });  
+		}
+	}); 
+	
+	for (var i=2; i<3; i++) {
+		$scope.groups[i] = {
+			name: i,
+			items: []
+		};
+		for (var j=0; j<3; j++) {
+			$scope.groups[i].items.push(i + '-' + j);
+		}
+	}
+
+	/*
+	* if given group is the selected group, deselect it
+	* else, select the given group
+	*/
+	$scope.toggleGroup = function(group) {
+		if ($scope.isGroupShown(group)) {
+			$scope.shownGroup = null;
+		} else {
+			$scope.shownGroup = group;
+		}
+	};
+	$scope.isGroupShown = function(group) {
+		return $scope.shownGroup === group;
+	};
+ 
 });
