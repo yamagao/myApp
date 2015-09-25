@@ -67,9 +67,21 @@ angular.module('starter.controllers', [])
   $scope.para = $stateParams;
 })
 
-.controller('accodionCtrl', function($scope) {
+.controller('accodionCtrl', function($scope, $http) {
+  $http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
+  .success(function (response) {
   $scope.groups = [];
-  for (var i=0; i<10; i++) {
+  $scope.groups[0] = {
+      name: 'Category',
+      items: []
+    };
+	for(var i = 0; i < response.categories.length; i++){
+		var exclude = [1,10,23,450,451,467,905,1082,1083,1383];
+		if(exclude.indexOf(response.categories[i].id) < 0){
+			$scope.groups[0].items.push(response.categories[i].title.replace(/&amp;/g, "&"));
+		}
+	}
+  for (var i=1; i<10; i++) {
     $scope.groups[i] = {
       name: i,
       items: []
@@ -92,6 +104,6 @@ angular.module('starter.controllers', [])
   };
   $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
-  };
+  };});
   
 });
