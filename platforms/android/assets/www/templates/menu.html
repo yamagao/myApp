@@ -44,10 +44,10 @@
             &nbsp;
             Read by {{group.name}}
           </ion-item>
-          <ion-item class="item-accordion"
+          <ion-item class="item-accordion" menu-close href="#/app/category/{{item.slug}}"
                     ng-repeat="item in group.items"
                     ng-show="isGroupShown(group)">
-            {{item}}
+            {{item.title}}
           </ion-item>
         </div>
       </ion-list>
