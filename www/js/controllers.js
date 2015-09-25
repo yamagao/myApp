@@ -68,42 +68,43 @@ angular.module('starter.controllers', [])
 })
 
 .controller('accodionCtrl', function($scope, $http) {
+	//get categories
   $http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
   .success(function (response) {
-  $scope.groups = [];
-  $scope.groups[0] = {
+    $scope.groups = [];
+    $scope.groups[0] = {
       name: 'Category',
       items: []
     };
-	for(var i = 0; i < response.categories.length; i++){
-		var exclude = [1,10,23,450,451,467,905,1082,1083,1383];
-		if(exclude.indexOf(response.categories[i].id) < 0){
-			$scope.groups[0].items.push(response.categories[i].title.replace(/&amp;/g, "&"));
+		for(var i = 0; i < response.categories.length; i++){
+			var exclude = [1,10,23,450,451,467,905,1082,1083,1383];
+			if(exclude.indexOf(response.categories[i].id) < 0){
+				$scope.groups[0].items.push(response.categories[i].title.replace(/&amp;/g, "&"));
+			}
 		}
-	}
-  for (var i=1; i<10; i++) {
-    $scope.groups[i] = {
-      name: i,
-      items: []
+		for (var i=1; i<10; i++) {
+      $scope.groups[i] = {
+        name: i,
+        items: []
+      };
+			for (var j=0; j<3; j++) {
+				$scope.groups[i].items.push(i + '-' + j);
+			}
+    }
+  
+		/*
+		* if given group is the selected group, deselect it
+		* else, select the given group
+		*/
+		$scope.toggleGroup = function(group) {
+      if ($scope.isGroupShown(group)) {
+        $scope.shownGroup = null;
+      } else {
+        $scope.shownGroup = group;
+      }
     };
-    for (var j=0; j<3; j++) {
-      $scope.groups[i].items.push(i + '-' + j);
-    }
-  }
-  
-  /*
-   * if given group is the selected group, deselect it
-   * else, select the given group
-   */
-  $scope.toggleGroup = function(group) {
-    if ($scope.isGroupShown(group)) {
-      $scope.shownGroup = null;
-    } else {
-      $scope.shownGroup = group;
-    }
-  };
-  $scope.isGroupShown = function(group) {
-    return $scope.shownGroup === group;
-  };});
-  
+    $scope.isGroupShown = function(group) {
+      return $scope.shownGroup === group;
+    };
+  });  
 });
