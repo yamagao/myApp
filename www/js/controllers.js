@@ -93,7 +93,7 @@ angular.module('starter.controllers', [])
 				$scope.groups[0].items.push(tempCat);
 			}
 		}
-		for (var i=1; i<10; i++) {
+		for (var i=1; i<2; i++) {
       $scope.groups[i] = {
         name: i,
         items: []

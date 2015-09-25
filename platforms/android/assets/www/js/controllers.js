@@ -63,7 +63,9 @@ angular.module('starter.controllers', [])
 
 .controller('PostCtrl', function($scope, $stateParams, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_post&post_id=" + $stateParams.postId + "&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.post = response.post;});
+  .success(function (response) {
+		$scope.post = response.post;
+	});
   $scope.para = $stateParams;
 })
 
@@ -91,7 +93,7 @@ angular.module('starter.controllers', [])
 				$scope.groups[0].items.push(tempCat);
 			}
 		}
-		for (var i=1; i<10; i++) {
+		for (var i=1; i<2; i++) {
       $scope.groups[i] = {
         name: i,
         items: []
