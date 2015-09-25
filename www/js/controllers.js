@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
 
 .controller('4HCtrl', function($scope, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/4-h-and-youth/?json=1&count=20&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.posts = response.posts;$scope.cat = response.category.title;});
+  .success(function (response) {$scope.posts = response.posts;$scope.cat = response.category.slug;});//modify+++++++++++
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
@@ -65,6 +65,11 @@ angular.module('starter.controllers', [])
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_post&post_id=" + $stateParams.postId + "&callback=JSON_CALLBACK")
   .success(function (response) {$scope.post = response.post;});
   $scope.para = $stateParams;
+})
+
+.controller('CatCtrl', function($scope, $stateParams, $http) {
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/" + $stateParams.catSlug + "/?json=1&count=20&callback=JSON_CALLBACK")
+  .success(function (response) {$scope.cat = response.category;$scope.posts = response.posts;});
 })
 
 .controller('accodionCtrl', function($scope, $http) {
@@ -80,7 +85,10 @@ angular.module('starter.controllers', [])
 			//exclude internal blogs or uncategorized
 			$scope.exclude = [1,10,23,450,451,467,905,1082,1083,1383];
 			if($scope.exclude.indexOf(response.categories[i].id) < 0){
-				$scope.groups[0].items.push(response.categories[i].title.replace(/&amp;/g, "&"));
+				//replace &amp; with & for title and push the category object to item
+				var tempCat = response.categories[i];
+				tempCat.title = tempCat.title.replace(/&amp;/g, "&");
+				$scope.groups[0].items.push(tempCat);
 			}
 		}
 		for (var i=1; i<10; i++) {

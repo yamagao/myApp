@@ -78,6 +78,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+
+  .state('app.category', {
+    url: '/category/:catSlug',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/category.html',
+        controller: 'CatCtrl'
+      }
+    }
+  })
   
   .state('app.4H', {
     url: '/4H',
