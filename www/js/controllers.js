@@ -77,8 +77,9 @@ angular.module('starter.controllers', [])
       items: []
     };
 		for(var i = 0; i < response.categories.length; i++){
-			var exclude = [1,10,23,450,451,467,905,1082,1083,1383];
-			if(exclude.indexOf(response.categories[i].id) < 0){
+			//exclude internal blogs or uncategorized
+			$scope.exclude = [1,10,23,450,451,467,905,1082,1083,1383];
+			if($scope.exclude.indexOf(response.categories[i].id) < 0){
 				$scope.groups[0].items.push(response.categories[i].title.replace(/&amp;/g, "&"));
 			}
 		}
