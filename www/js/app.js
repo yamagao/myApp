@@ -70,7 +70,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   })
 
   .state('app.post', {
-    url: '/posts/:cat/:postId',
+    url: '/posts/:catTitle/:postId',
     views: {
       'menuContent': {
         templateUrl: 'templates/post.html',
