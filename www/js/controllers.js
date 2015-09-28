@@ -39,6 +39,11 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+	
+	// Favorite list
+  $scope.favorite = function() {
+    $scope.getElementById("fav").style.visibility = "hidden";
+  };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -84,23 +89,11 @@ angular.module('starter.controllers', [])
 	$scope.groups = [];
 	
 	//get favorites
-	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
-  .success(function (response) {
-    $scope.groups[0] = {
-      name: 'favorite',
-      items: []
-    };
-		for(var i = 0; i < response.categories.length; i++){
-			//exclude internal blogs or uncategorized
-			$scope.exclude = [1,10,23,450,451,467,905,1082,1083,1383];
-			if($scope.exclude.indexOf(response.categories[i].id) < 0){
-				//replace &amp; with & for title and push the category object to item
-				var tempCat = response.categories[i];
-				tempCat.title = tempCat.title.replace(/&amp;/g, "&");
-				$scope.groups[0].items.push(tempCat);
-			}
-		}
-	});
+	$scope.groups[0] = {
+		name: 'favorite',
+		items: []
+	};
+	$scope.groups[0].items.push({title: "a", post_count:10});
 	
 	//get categories
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
