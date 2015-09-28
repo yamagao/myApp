@@ -7,7 +7,12 @@
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
+      </ion-nav-buttons>      
+			
+			<ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-heart"></button>
       </ion-nav-buttons>
+			
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
@@ -30,23 +35,20 @@
         <ion-item menu-close href="#/app/playlists">
           Playlists
         </ion-item>
-		<ion-item menu-close href="#/app/4H">
+				<ion-item menu-close href="#/app/4H">
           4-H & Youth
         </ion-item>
-		<ion-item menu-close href="#/app/category">
-          Category
-        </ion-item>
-        <div ng-repeat="category in categories">
+        <div ng-repeat="group in groups">
           <ion-item class="item-stable"
-                    ng-click="toggleGroup(category)"
-                    ng-class="{active: isGroupShown(category)}">
-              <i class="icon" ng-class="isGroupShown(category) ? 'ion-minus' : 'ion-plus'"></i>
+                    ng-click="toggleGroup(group)"
+                    ng-class="{active: isGroupShown(group)}">
+              <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
             &nbsp;
-            Read by {{category.name}}
+            Read by {{group.name.charAt(0).toUpperCase() + group.name.slice(1);}}
           </ion-item>
-          <ion-item class="item-accordion" menu-close href="#/app/category/{{item.slug}}"
-                    ng-repeat="item in category.items"
-                    ng-show="isGroupShown(category)">
+          <ion-item class="item-accordion" menu-close href="#/app/list/{{group.name}}/{{item.slug}}"
+                    ng-repeat="item in group.items"
+                    ng-show="isGroupShown(group)">
             {{item.title}} ({{item.post_count}})
           </ion-item>
         </div>

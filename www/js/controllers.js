@@ -39,21 +39,6 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
-	
-	/*
-	* if given group is the selected group, deselect it
-	* else, select the given group
-	*/
-	$scope.toggleGroup = function(group) {
-		if ($scope.isGroupShown(group)) {
-			$scope.shownGroup = null;
-		} else {
-			$scope.shownGroup = group;
-		}
-	};
-	$scope.isGroupShown = function(group) {
-		return $scope.shownGroup === group;
-	};
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -84,18 +69,25 @@ angular.module('starter.controllers', [])
   $scope.para = $stateParams;
 })
 
-.controller('CatCtrl', function($scope, $stateParams, $http) {
-	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/" + $stateParams.catSlug + "/?json=1&count=20&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.cat = response.category;$scope.posts = response.posts;});
+.controller('ListCtrl', function($scope, $stateParams, $http) {
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/" + $stateParams.readBy + "/" + $stateParams.slug + "/?json=1&count=20&callback=JSON_CALLBACK")
+  .success(function (response) {
+		if($stateParams.readBy == "category")
+			$scope.list = response.category;
+		else
+			$scope.list = response.tag;
+		$scope.posts = response.posts;
+	});
 })
 
 .controller('accodionCtrl', function($scope, $http) {
-	$scope.categories = [];
-	//get categories
+	$scope.groups = [];
+	
+	//get favorites
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.categories[0] = {
-      name: 'Category',
+    $scope.groups[0] = {
+      name: 'favorite',
       items: []
     };
 		for(var i = 0; i < response.categories.length; i++){
@@ -105,16 +97,35 @@ angular.module('starter.controllers', [])
 				//replace &amp; with & for title and push the category object to item
 				var tempCat = response.categories[i];
 				tempCat.title = tempCat.title.replace(/&amp;/g, "&");
-				$scope.categories[0].items.push(tempCat);
+				$scope.groups[0].items.push(tempCat);
 			}
 		}
-	}); 
+	});
+	
+	//get categories
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
+  .success(function (response) {
+    $scope.groups[1] = {
+      name: 'category',
+      items: []
+    };
+		for(var i = 0; i < response.categories.length; i++){
+			//exclude internal blogs or uncategorized
+			$scope.exclude = [1,10,23,450,451,467,905,1082,1083,1383];
+			if($scope.exclude.indexOf(response.categories[i].id) < 0){
+				//replace &amp; with & for title and push the category object to item
+				var tempCat = response.categories[i];
+				tempCat.title = tempCat.title.replace(/&amp;/g, "&");
+				$scope.groups[1].items.push(tempCat);
+			}
+		}
+	});
 	
 	//get tags
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_tag_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.categories[1] = {
-      name: 'Popular Tag',
+    $scope.groups[2] = {
+      name: 'tag',
       items: []
     };
 		for(var i = 0; i < response.tags.length; i++){
@@ -123,18 +134,34 @@ angular.module('starter.controllers', [])
 				//replace &amp; with & for title and push the category object to item
 				var tempTag = response.tags[i];
 				tempTag.title = tempTag.title.replace(/&amp;/g, "&");
-				$scope.categories[1].items.push(tempTag);
+				$scope.groups[2].items.push(tempTag);
 			}
 		}
 	}); 
 	
-	for (var i=2; i<3; i++) {
-		$scope.categories[i] = {
+	for (var i=3; i<4; i++) {
+		$scope.groups[i] = {
 			name: i,
 			items: []
 		};
 		for (var j=0; j<3; j++) {
-			$scope.categories[i].items.push(i + '-' + j);
+			$scope.groups[i].items.push(i + '-' + j);
 		}
-	} 
+	}
+
+	/*
+	* if given group is the selected group, deselect it
+	* else, select the given group
+	*/
+	$scope.toggleGroup = function(group) {
+		if ($scope.isGroupShown(group)) {
+			$scope.shownGroup = null;
+		} else {
+			$scope.shownGroup = group;
+		}
+	};
+	$scope.isGroupShown = function(group) {
+		return $scope.shownGroup === group;
+	};
+ 
 });
