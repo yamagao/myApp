@@ -39,6 +39,21 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+	
+	/*
+	* if given group is the selected group, deselect it
+	* else, select the given group
+	*/
+	$scope.toggleGroup = function(group) {
+		if ($scope.isGroupShown(group)) {
+			$scope.shownGroup = null;
+		} else {
+			$scope.shownGroup = group;
+		}
+	};
+	$scope.isGroupShown = function(group) {
+		return $scope.shownGroup === group;
+	};
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -75,11 +90,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('accodionCtrl', function($scope, $http) {
-	$scope.groups = [];
+	$scope.categories = [];
 	//get categories
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.groups[0] = {
+    $scope.categories[0] = {
       name: 'Category',
       items: []
     };
@@ -90,7 +105,7 @@ angular.module('starter.controllers', [])
 				//replace &amp; with & for title and push the category object to item
 				var tempCat = response.categories[i];
 				tempCat.title = tempCat.title.replace(/&amp;/g, "&");
-				$scope.groups[0].items.push(tempCat);
+				$scope.categories[0].items.push(tempCat);
 			}
 		}
 	}); 
@@ -98,7 +113,7 @@ angular.module('starter.controllers', [])
 	//get tags
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_tag_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.groups[1] = {
+    $scope.categories[1] = {
       name: 'Popular Tag',
       items: []
     };
@@ -108,34 +123,18 @@ angular.module('starter.controllers', [])
 				//replace &amp; with & for title and push the category object to item
 				var tempTag = response.tags[i];
 				tempTag.title = tempTag.title.replace(/&amp;/g, "&");
-				$scope.groups[1].items.push(tempTag);
+				$scope.categories[1].items.push(tempTag);
 			}
 		}
 	}); 
 	
 	for (var i=2; i<3; i++) {
-		$scope.groups[i] = {
+		$scope.categories[i] = {
 			name: i,
 			items: []
 		};
 		for (var j=0; j<3; j++) {
-			$scope.groups[i].items.push(i + '-' + j);
+			$scope.categories[i].items.push(i + '-' + j);
 		}
-	}
-
-	/*
-	* if given group is the selected group, deselect it
-	* else, select the given group
-	*/
-	$scope.toggleGroup = function(group) {
-		if ($scope.isGroupShown(group)) {
-			$scope.shownGroup = null;
-		} else {
-			$scope.shownGroup = group;
-		}
-	};
-	$scope.isGroupShown = function(group) {
-		return $scope.shownGroup === group;
-	};
- 
+	} 
 });
