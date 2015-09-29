@@ -10,8 +10,7 @@
       </ion-nav-buttons>      
 			
 			<ion-nav-buttons side="right">
-        <button id="fav" class="button button-icon button-clear ion-heart button-positive" ng-click="favorite()"></button>
-				<button id="nonfav" class="button button-icon button-clear ion-heart button-negative" ng-click="favorite()"></button>
+        <button id="fav" class="button button-icon button-clear ion-heart button-{{faved}}" ng-click="favorite()"></button>
       </ion-nav-buttons>
 			
     </ion-nav-bar>
@@ -38,6 +37,9 @@
         </ion-item>
 				<ion-item menu-close href="#/app/4H">
           4-H & Youth
+        </ion-item>
+				<ion-item menu-close href="#/app/list/{{fav.name}}/{{fav.slug}}" ng-repeat="fav in favs">
+            {{fav.title}}
         </ion-item>
         <div ng-repeat="group in groups">
           <ion-item class="item-stable"

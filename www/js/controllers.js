@@ -39,10 +39,18 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
-	
+	$scope.current = {};
 	// Favorite list
   $scope.favorite = function() {
-    $scope.getElementById("fav").style.visibility = "hidden";
+		$scope.favs = [];
+		if($scope.faved == "positive"){
+			$scope.faved = "negative";
+		}
+		else{
+			$scope.faved = "positive";
+			$scope.favs.push($scope.current);
+			alert(this);
+		}
   };
 })
 
@@ -74,6 +82,7 @@ angular.module('starter.controllers', [])
   $scope.para = $stateParams;
 })
 
+//LIST
 .controller('ListCtrl', function($scope, $stateParams, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/" + $stateParams.readBy + "/" + $stateParams.slug + "/?json=1&count=20&callback=JSON_CALLBACK")
   .success(function (response) {
@@ -82,6 +91,7 @@ angular.module('starter.controllers', [])
 		else
 			$scope.list = response.tag;
 		$scope.posts = response.posts;
+		$scope.current = {name: $stateParams.readBy, slug: $stateParams.slug, title: $scope.list};
 	});
 })
 
