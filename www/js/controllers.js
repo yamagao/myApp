@@ -1,6 +1,40 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.factory('Favorites', function($http) {
+	var z = 2;
+	var slug = "agribusiness";
+	
+	function giveSlug(slug){
+		this.slug = slug;
+		alert(slug);
+	}
+	
+	return {
+		doStuff: function(x){
+			return x * z;
+		},
+		doMoreStuff: function(y){
+			return y * z;
+		},
+		isFaved: function(toggle){
+			if(toggle == true)
+				return false;
+			else{
+				return true;
+			}
+		},
+		isSlug: function(par){
+			if(angular.equals(slug,par)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	} 
+})
+
+.controller('AppCtrl', function($scope, $ionicModal, $timeout,Favorites) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -39,18 +73,11 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+	
 	$scope.current = {};
 	// Favorite list
   $scope.favorite = function() {
-		$scope.favs = [];
-		if($scope.faved == "positive"){
-			$scope.faved = "negative";
-		}
-		else{
-			$scope.faved = "positive";
-			$scope.favs.push($scope.current);
-			alert(this);
-		}
+		$scope.faved = Favorites.isFaved($scope.faved);
   };
 })
 
@@ -95,7 +122,7 @@ angular.module('starter.controllers', [])
 })
 
 //LIST
-.controller('ListCtrl', function($scope, $stateParams, $http) {
+.controller('ListCtrl', function($scope, $stateParams, $http, Favorites) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/" + $stateParams.readBy + "/" + $stateParams.slug + "/?json=1&count=20&callback=JSON_CALLBACK")
   .success(function (response) {
 		if($stateParams.readBy == "category")
@@ -113,6 +140,9 @@ angular.module('starter.controllers', [])
 				value.feature = value.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357');
 			}
     })
+		if(Favorites.isSlug($stateParams.slug)){
+			alert("yes");
+		}else {alert("no");}
 	});
 })
 

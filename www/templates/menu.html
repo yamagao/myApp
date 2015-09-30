@@ -10,7 +10,7 @@
       </ion-nav-buttons>      
 			
 			<ion-nav-buttons side="right">
-        <button id="fav" class="button button-icon button-clear ion-heart button-{{faved}}" ng-click="favorite()"></button>
+        <button id="fav" class="button button-icon button-clear ion-heart" ng-class="{'button-positive': faved}" ng-click="favorite()"></button>
       </ion-nav-buttons>
 			
     </ion-nav-bar>
