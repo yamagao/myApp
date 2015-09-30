@@ -67,7 +67,19 @@ angular.module('starter.controllers', [])
 
 .controller('4HCtrl', function($scope, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/4-h-and-youth/?json=1&count=20&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.posts = response.posts;$scope.cat = response.category.slug;});//modify+++++++++++
+  .success(function (response) {
+		$scope.posts = response.posts;
+		$scope.cat = response.category.slug;
+		angular.forEach($scope.posts,function(value){
+			var html;
+			if(angular.isDefined(value.attachments[0]) == true){
+				value.feature = "<img src=" + value.attachments[0].url + " width=100%>";
+			}
+			else if(angular.isDefined(value.custom_fields.thumbnail_html) == true){
+				value.feature = value.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357');
+			}
+    })
+	});//modify+++++++++++
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
@@ -92,6 +104,15 @@ angular.module('starter.controllers', [])
 			$scope.list = response.tag;
 		$scope.posts = response.posts;
 		$scope.current = {name: $stateParams.readBy, slug: $stateParams.slug, title: $scope.list};
+		angular.forEach($scope.posts,function(value){
+			var html;
+			if(angular.isDefined(value.attachments[0]) == true){
+				value.feature = "<img src=" + value.attachments[0].url + " width=100%>";
+			}
+			else if(angular.isDefined(value.custom_fields.thumbnail_html) == true){
+				value.feature = value.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357');
+			}
+    })
 	});
 })
 

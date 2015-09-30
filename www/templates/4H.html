@@ -4,9 +4,8 @@
       <ion-item ng-repeat="post in posts" href="#/app/posts/{{cat}}/{{post.id}}">
 		<!--<div ng-bind-html="post.custom_fields.thumbnail_html[0] + post.title"></div>-->
         <div ng-bind-html="'<h1>' + post.title + '</h1>' +
-						   'Posted on ' + post.date.substring(0, 10) + '<br/>' +						    
-						   post.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357') + '<br/>' + 
-						   post.excerpt"></div>
+						   '<p>Posted on ' + post.date.substring(0, 10) + '</p>' +	post.excerpt + post.feature">
+				</div>
       </ion-item>
     </ion-list>
   </ion-content>
