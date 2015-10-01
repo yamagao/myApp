@@ -7,7 +7,12 @@
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
+      </ion-nav-buttons>      
+			
+			<ion-nav-buttons side="right">
+        <button id="fav" class="button button-icon button-clear ion-heart" ng-class="{'button-positive': faved}" ng-click="favorite()"></button>
       </ion-nav-buttons>
+			
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
@@ -30,11 +35,11 @@
         <ion-item menu-close href="#/app/playlists">
           Playlists
         </ion-item>
-		<ion-item menu-close href="#/app/4H">
+				<ion-item menu-close href="#/app/4H">
           4-H & Youth
         </ion-item>
-		<ion-item menu-close href="#/app/category">
-          Category
+				<ion-item menu-close href="#/app/list/{{fav.name}}/{{fav.slug}}" ng-repeat="fav in favs">
+            {{fav.title}}
         </ion-item>
         <div ng-repeat="group in groups">
           <ion-item class="item-stable"
@@ -42,9 +47,9 @@
                     ng-class="{active: isGroupShown(group)}">
               <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus' : 'ion-plus'"></i>
             &nbsp;
-            Read by {{group.name}}
+            Read by {{group.name.charAt(0).toUpperCase() + group.name.slice(1);}}
           </ion-item>
-          <ion-item class="item-accordion" menu-close href="#/app/category/{{item.slug}}"
+          <ion-item class="item-accordion" menu-close href="#/app/list/{{group.name}}/{{item.slug}}"
                     ng-repeat="item in group.items"
                     ng-show="isGroupShown(group)">
             {{item.title}} ({{item.post_count}})

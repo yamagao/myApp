@@ -1,6 +1,40 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.factory('Favorites', function($http) {
+	var z = 2;
+	var slug = "agribusiness";
+	
+	function giveSlug(slug){
+		this.slug = slug;
+		alert(slug);
+	}
+	
+	return {
+		doStuff: function(x){
+			return x * z;
+		},
+		doMoreStuff: function(y){
+			return y * z;
+		},
+		isFaved: function(toggle){
+			if(toggle == true)
+				return false;
+			else{
+				return true;
+			}
+		},
+		isSlug: function(par){
+			if(angular.equals(slug,par)){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	} 
+})
+
+.controller('AppCtrl', function($scope, $ionicModal, $timeout,Favorites) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -39,6 +73,12 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
+	
+	$scope.current = {};
+	// Favorite list
+  $scope.favorite = function() {
+		$scope.faved = Favorites.isFaved($scope.faved);
+  };
 })
 
 .controller('PlaylistsCtrl', function($scope) {
@@ -54,7 +94,19 @@ angular.module('starter.controllers', [])
 
 .controller('4HCtrl', function($scope, $http) {
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/4-h-and-youth/?json=1&count=20&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.posts = response.posts;$scope.cat = response.category.slug;});//modify+++++++++++
+  .success(function (response) {
+		$scope.posts = response.posts;
+		$scope.cat = response.category.slug;
+		angular.forEach($scope.posts,function(value){
+			var html;
+			if(angular.isDefined(value.attachments[0]) == true){
+				value.feature = "<img src=" + value.attachments[0].url + " width=100%>";
+			}
+			else if(angular.isDefined(value.custom_fields.thumbnail_html) == true){
+				value.feature = value.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357');
+			}
+    })
+	});//modify+++++++++++
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
@@ -69,18 +121,46 @@ angular.module('starter.controllers', [])
   $scope.para = $stateParams;
 })
 
-.controller('CatCtrl', function($scope, $stateParams, $http) {
-	$http.jsonp("http://blogs.ifas.ufl.edu/global/category/" + $stateParams.catSlug + "/?json=1&count=20&callback=JSON_CALLBACK")
-  .success(function (response) {$scope.cat = response.category;$scope.posts = response.posts;});
+//LIST
+.controller('ListCtrl', function($scope, $stateParams, $http, Favorites) {
+	$http.jsonp("http://blogs.ifas.ufl.edu/global/" + $stateParams.readBy + "/" + $stateParams.slug + "/?json=1&count=20&callback=JSON_CALLBACK")
+  .success(function (response) {
+		if($stateParams.readBy == "category")
+			$scope.list = response.category;
+		else
+			$scope.list = response.tag;
+		$scope.posts = response.posts;
+		$scope.current = {name: $stateParams.readBy, slug: $stateParams.slug, title: $scope.list};
+		angular.forEach($scope.posts,function(value){
+			var html;
+			if(angular.isDefined(value.attachments[0]) == true){
+				value.feature = "<img src=" + value.attachments[0].url + " width=100%>";
+			}
+			else if(angular.isDefined(value.custom_fields.thumbnail_html) == true){
+				value.feature = value.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357');
+			}
+    })
+		if(Favorites.isSlug($stateParams.slug)){
+			alert("yes");
+		}else {alert("no");}
+	});
 })
 
 .controller('accodionCtrl', function($scope, $http) {
 	$scope.groups = [];
+	
+	//get favorites
+	$scope.groups[0] = {
+		name: 'favorite',
+		items: []
+	};
+	$scope.groups[0].items.push({title: "a", post_count:10});
+	
 	//get categories
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_category_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.groups[0] = {
-      name: 'Category',
+    $scope.groups[1] = {
+      name: 'category',
       items: []
     };
 		for(var i = 0; i < response.categories.length; i++){
@@ -90,16 +170,16 @@ angular.module('starter.controllers', [])
 				//replace &amp; with & for title and push the category object to item
 				var tempCat = response.categories[i];
 				tempCat.title = tempCat.title.replace(/&amp;/g, "&");
-				$scope.groups[0].items.push(tempCat);
+				$scope.groups[1].items.push(tempCat);
 			}
 		}
-	}); 
+	});
 	
 	//get tags
 	$http.jsonp("http://blogs.ifas.ufl.edu/global/?json=get_tag_index&callback=JSON_CALLBACK")
   .success(function (response) {
-    $scope.groups[1] = {
-      name: 'Popular Tag',
+    $scope.groups[2] = {
+      name: 'tag',
       items: []
     };
 		for(var i = 0; i < response.tags.length; i++){
@@ -108,12 +188,12 @@ angular.module('starter.controllers', [])
 				//replace &amp; with & for title and push the category object to item
 				var tempTag = response.tags[i];
 				tempTag.title = tempTag.title.replace(/&amp;/g, "&");
-				$scope.groups[1].items.push(tempTag);
+				$scope.groups[2].items.push(tempTag);
 			}
 		}
 	}); 
 	
-	for (var i=2; i<3; i++) {
+	for (var i=3; i<4; i++) {
 		$scope.groups[i] = {
 			name: i,
 			items: []

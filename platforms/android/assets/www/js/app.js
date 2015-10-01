@@ -74,11 +74,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'angular-loading-bar'
   })
 
   .state('app.post', {
-    url: '/posts/:catTitle/:postId',
+    url: '/posts/:title/:postId',
     views: {
       'menuContent': {
         templateUrl: 'templates/post.html',
         controller: 'PostCtrl'
+      }
+    }
+  })
+
+  .state('app.list', {
+    url: '/list/:readBy/:slug',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/list.html',
+        controller: 'ListCtrl'
       }
     }
   })
