@@ -1,35 +1,23 @@
 angular.module('starter.controllers', [])
 
-.factory('Favorites', function($http) {
-	var z = 2;
-	var slug = "agribusiness";
-	
-	function giveSlug(slug){
-		this.slug = slug;
-		alert(slug);
-	}
+.service('Favorites', function() {
+	var cur = "abc";
+	var favList = ["academics"];
 	
 	return {
-		doStuff: function(x){
-			return x * z;
+		getCur: function(){
+			return cur;
 		},
-		doMoreStuff: function(y){
-			return y * z;
+		setCur: function(slug){
+			cur = slug;
 		},
-		isFaved: function(toggle){
-			if(toggle == true)
-				return false;
-			else{
-				return true;
+		isFaved: function(){
+			for(var i = 0; i < favList.length; i++){
+				if(angular.equals(favList[i], cur)){
+					return true;
+				}
 			}
-		},
-		isSlug: function(par){
-			if(angular.equals(slug,par)){
-				return true;
-			}
-			else{
-				return false;
-			}
+			return false;
 		}
 	} 
 })
@@ -73,11 +61,11 @@ angular.module('starter.controllers', [])
       $scope.closeLogin();
     }, 1000);
   };
-	
-	$scope.current = {};
+
 	// Favorite list
   $scope.favorite = function() {
-		$scope.faved = Favorites.isFaved($scope.faved);
+		$scope.faved = Favorites.isFaved();
+		//alert(Favorites.getCur());
   };
 })
 
@@ -140,9 +128,7 @@ angular.module('starter.controllers', [])
 				value.feature = value.custom_fields.thumbnail_html[0].replace('150', '100%').replace('150', 'auto').replace('150x150', '1080x357');
 			}
     })
-		if(Favorites.isSlug($stateParams.slug)){
-			alert("yes");
-		}else {alert("no");}
+		Favorites.setCur($stateParams.slug);
 	});
 })
 
